@@ -20,7 +20,7 @@
             //Creates the simulation with the arguments of the file
             Simulator simulation = new Simulator(properties);
             //Starts the simulation
-            simulation.CoreLoop();
+            simulation.SimulatorRunner();
         }
     }
 }

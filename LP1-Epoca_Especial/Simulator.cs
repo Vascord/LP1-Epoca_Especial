@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace LP1_Epoca_Especial
 {
@@ -106,13 +108,27 @@ namespace LP1_Epoca_Especial
             // Miguel Romão Fernández REMEMBER
         }
 
-        /// <summary>
-        /// Main loop of the simulation. Will stop at the end of X turns,
-        /// which where choose be the user in properties.
-        /// </summary>
-        public void CoreLoop()
+        public void CoreLoop() 
         {
-            // WIP
+            while(true)
+            {
+                // Main Code
+            }
+        }
+
+        /// <summary>
+        /// Main loop of the simulation that stops the program if you press
+        /// Escape. It also creates the Thread ThreadProc to have the main
+        /// code doing the Events.
+        /// </summary>
+        public void SimulatorRunner()
+        {
+            // Launch the Thread ThreadProc
+            Task.Run(CoreLoop);
+
+            while(Console.ReadKey().Key != ConsoleKey.Escape);
+
+            // David D. Ajudo-me :)
         }
     }
 }
