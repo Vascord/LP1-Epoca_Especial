@@ -1,0 +1,8 @@
+# Taxas
+selc-rate-exp -0.02
+swap-rate-exp 0.75
+repr-rate-exp 0.00
+
+# Dimensões
+xdim 100
+ydim 40
