@@ -26,7 +26,7 @@ namespace LP1_Epoca_Especial
         public int this[int x, int y] 
         {
             get { return world[x,y]; }
-            set { world[x,y] = value;}
+            set { world[x,y] = value; }
         }
 
         /// <summary>

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace LP1_Epoca_Especial
 {
@@ -101,23 +101,42 @@ namespace LP1_Epoca_Especial
                 world[a.Pos.X, a.Pos.Y] = 3;
             }
 
-            // Swap : only change pos
-            // Reproduction : create a new agent a
-            // Selection : WIP
-
             // Miguel Romão Fernández REMEMBER
         }
 
+        /// <summary>
+        /// Main loop of the simulation that permits the simulation to run.
+        /// </summary>
         public void CoreLoop() 
         {
+            // Loop of the simulation
             while(true)
             {
                 // Main Code
+
+                // Obtaining lambda from each event
+
+                double lambdaSwap = (_prop.worldSizeX * _prop.worldSizeY / 3.0) 
+                * Math.Pow(10, _prop.swapRateExp);
+                double lambdaRepr = (_prop.worldSizeX * _prop.worldSizeY / 3.0) 
+                * Math.Pow(10, _prop.reprRateExp);
+                double lambdaSelc = (_prop.worldSizeX * _prop.worldSizeY / 3.0) 
+                * Math.Pow(10, _prop.selcRateExp);
+
+                // Obtaining the number of times those events happen in the turn
+
+                int numSwap = Poisson(lambdaSwap);
+                int numRepr = Poisson(lambdaRepr);
+                int numSelc = Poisson(lambdaSelc);
+
+                // Swap : only change pos
+                // Reproduction : create a new agent a
+                // Selection : WIP
             }
         }
 
         /// <summary>
-        /// Main loop of the simulation that stops the program if you press
+        /// Loop of the simulation that stops the program if you press
         /// Escape. It also creates the Thread ThreadProc to have the main
         /// code doing the Events.
         /// </summary>
@@ -126,9 +145,42 @@ namespace LP1_Epoca_Especial
             // Launch the Thread ThreadProc
             Task.Run(CoreLoop);
 
+            // While the Escape Key is not pressed, the code don't stop
             while(Console.ReadKey().Key != ConsoleKey.Escape);
 
             // David D. Ajudo-me :)
+        }
+
+        private int Poisson(double lambda)
+        {
+            // Variables for the Poisson algorythme
+
+            int k = 0;
+            double p = 1;
+            double step = 500;
+            double u;
+
+            // Loop to obtain the number of times for the event
+
+            do{
+                k += 1;
+                u = _random.NextDouble();
+                p *= u;
+                while( (p < 1) && (lambda > 0))
+                    if (lambda > step)
+                    {
+                        p *= Math.Exp(step);
+                        lambda -= step;
+                    }
+                    else
+                    {
+                        p *= Math.Exp(lambda);
+                        lambda = 0;
+                    }
+            }
+            while(p > 1);
+
+            return (k - 1);
         }
     }
 }
