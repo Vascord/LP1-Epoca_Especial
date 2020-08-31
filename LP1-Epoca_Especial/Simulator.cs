@@ -113,7 +113,6 @@ namespace LP1_Epoca_Especial
             while(true)
             {
                 // Main Code
-
                 // Obtaining lambda from each event
 
                 double lambdaSwap = (_prop.worldSizeX * _prop.worldSizeY / 3.0) 
@@ -128,6 +127,17 @@ namespace LP1_Epoca_Especial
                 int numSwap = Poisson(lambdaSwap);
                 int numRepr = Poisson(lambdaRepr);
                 int numSelc = Poisson(lambdaSelc);
+
+                // Creates the event list that will contain the events
+                List<Event> eventList = new List<Event>();
+
+                // Puts the number of events in the list
+                eventList = PuttingEvents(eventList, numSwap, 1);
+                eventList = PuttingEvents(eventList, numRepr, 2);
+                eventList = PuttingEvents(eventList, numSelc, 3);
+
+                // Shuffle the list
+                eventList = ShuffleList(eventList);
 
                 // Swap : only change pos
                 // Reproduction : create a new agent a
@@ -151,9 +161,15 @@ namespace LP1_Epoca_Especial
             // David D. Ajudo-me :)
         }
 
+        /// <summary>
+        /// Method doing the Poisson algorithm to calculate the number of
+        /// times a event is reproduced.
+        /// </summary>
+        /// <param name="lambda">lambda from the specief event depending
+        /// of the expRate of the event</param>
         private int Poisson(double lambda)
         {
-            // Variables for the Poisson algorythme
+            // Variables for the Poisson algorithm
 
             int k = 0;
             double p = 1;
@@ -181,6 +197,67 @@ namespace LP1_Epoca_Especial
             while(p > 1);
 
             return (k - 1);
+        }
+
+        /// <summary>
+        /// Method putting the number of each type of event in a list
+        /// </summary>
+        /// <param name="eventList">The list containing the list of
+        /// events</param>
+        /// <param name="numEvent">The number of the type of the 
+        /// event</param>
+        /// <param name="type">Number to define the type of event</param>
+        private List<Event> PuttingEvents(List<Event> eventList, int numEvent,
+        int type)
+        {
+            // Switch case putting the events in a list
+            switch(type)
+            {
+                //Putting the number of swap events in the list
+                case(1):
+                    for(int i = 0; i < numEvent; i++)
+                    {
+                        Event a = new Event(EventType.SWAP);
+                        eventList.Add(a);
+                    }
+                    break;
+                //Putting the number of reproduction events in the list
+                case(2):
+                    for(int i = 0; i < numEvent; i++)
+                    {
+                        Event b = new Event(EventType.REPRODUCTION);
+                        eventList.Add(b);
+                    }
+                    break;
+                //Putting the number of selection events in the list
+                case(3):
+                    for(int i = 0; i < numEvent; i++)
+                    {
+                        Event c = new Event(EventType.SELECTION);
+                        eventList.Add(c);
+                    }
+                    break;
+            }
+
+            return eventList;
+        }
+
+        private List<Event> ShuffleList(List<Event> eventList)
+        {
+            // Cycle suffling the list
+            for(int i = eventList.Count-1; i > 0; i--)
+            {
+                // Selects a random number for the position in the list
+                int selected = _random.Next(i-1);
+
+                // Swaps the events from the i position and the selected 
+                // position
+                Event a = eventList[selected];
+                eventList[selected] = eventList[i];
+                eventList[i] = a;
+            }
+
+            return eventList;
         }
     }
 }
