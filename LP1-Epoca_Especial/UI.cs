@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace LP1_Epoca_Especial
 {
@@ -26,6 +25,7 @@ namespace LP1_Epoca_Especial
         /// </summary>
         public void simUI()
         {
+            Console.Clear();
             for(int x = 0; x < _prop.worldSizeX; x++)
             {
                 for(int y = 0; y < _prop.worldSizeY; y++)
