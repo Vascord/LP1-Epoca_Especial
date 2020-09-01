@@ -5,28 +5,19 @@ namespace LP1_Epoca_Especial
     /// </summary>
     public class World
     {
-        /// <summary>
-        /// Dimension X of the world.
-        /// </summary>
-        private int _worldSizeX;
 
         /// <summary>
-        /// Dimension Y of the world.
+        /// MultiDimensional Array defined by _worldSizeX and _worldSize Y
         /// </summary>
-        private int _worldSizeY;
-
-        /// <summary>
-        /// MultiDimentional Array defined by _worldSizeX and _worldSize Y
-        /// </summary>
-        private int[,] world;
+        public int[,] _world ;
 
         /// <summary>
         /// Indexing world
         /// </summary>
         public int this[int x, int y] 
         {
-            get { return world[x,y]; }
-            set { world[x,y] = value; }
+            get { return _world[x,y]; }
+            set { _world[x,y] = value; }
         }
 
         /// <summary>
@@ -37,11 +28,7 @@ namespace LP1_Epoca_Especial
         public World(int worldSizeX, int worldSizeY)
         {
             // Initializes instance variables
-            
-            this._worldSizeX = worldSizeX;
-            this._worldSizeY = worldSizeY;
-
-            world = new int[worldSizeX, worldSizeY];
+            _world = new int[worldSizeX, worldSizeY];
         }
     }
 }

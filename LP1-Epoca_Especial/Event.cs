@@ -22,5 +22,6 @@ namespace LP1_Epoca_Especial
 
             _type = type;
         }
+
     }
 }
