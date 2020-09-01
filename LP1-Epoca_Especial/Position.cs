@@ -8,11 +8,11 @@ namespace LP1_Epoca_Especial
         /// <summary>
         /// Pos X of the Vector.
         /// </summary>
-        public int X {get; }
+        public int X {get;}
         /// <summary>
         /// Pos Y of the Vector.
         /// </summary>
-        public int Y {get; }
+        public int Y {get;}
 
         /// <summary>
         /// Struct constructor.

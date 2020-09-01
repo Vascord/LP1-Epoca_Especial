@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Threading;
 
 namespace LP1_Epoca_Especial
@@ -26,7 +25,15 @@ namespace LP1_Epoca_Especial
         /// </summary>
         private List<Agent> _agents;
 
+        /// <summary>
+        /// Instace of the world of the simulation.
+        /// </summary>
         private World _world;
+
+        /// <summary>
+        /// Instance of the UI manager.
+        /// </summary>
+        private UI _ui;
 
         /// <summary>
         /// Class constructor.
@@ -41,6 +48,7 @@ namespace LP1_Epoca_Especial
 
             _random = new Random();
             _agents = new List<Agent>();
+            _ui = new UI(_world, _prop);
 
             // For each position in world, place a agent of a type or not
 
@@ -86,7 +94,6 @@ namespace LP1_Epoca_Especial
             // Loop of the simulation
             while(true)
             {
-                // Main Code
                 // Obtaining lambda from each event
 
                 double lambdaSwap = (_prop.worldSizeX * _prop.worldSizeY / 3.0) 
@@ -115,10 +122,9 @@ namespace LP1_Epoca_Especial
 
                 for(int i = 0; i < eventList.Count; i++)
                 {
-                    Console.WriteLine("--------");
+                    Console.Clear();
                     Position originalPos = GetPos();
                     Position adjacentPos = AdjacentPos(originalPos);
-                    Console.WriteLine($"{eventList[i].Type}");
                     
                     switch(eventList[i].Type)
                     {
@@ -147,17 +153,7 @@ namespace LP1_Epoca_Especial
 
                     _world = WorldUpdate(_agents, _world);
 
-                    for(int g = 0; g < _prop.worldSizeX; g++)
-                    {
-                        for(int y = 0; y < _prop.worldSizeY; y++)
-                        {
-                            Console.Write($"{_world[g,y]}");
-                        }
-                        Console.WriteLine();
-                    }
-
-                    Thread.Sleep(100);
-
+                    _ui.simUI();
                 }
             }
         }
@@ -291,9 +287,8 @@ namespace LP1_Epoca_Especial
         /// </summary>
         private Position GetPos()
         {
-            int x = _random.Next(0,_prop.worldSizeX);
-            int y = _random.Next(0,_prop.worldSizeY);
-            Console.WriteLine($"{x} {y}");
+            int x = _random.Next(_prop.worldSizeX);
+            int y = _random.Next(_prop.worldSizeY);
             Position pos = new Position(x, y);
 
             return pos;
@@ -338,8 +333,6 @@ namespace LP1_Epoca_Especial
             }while((y < 0) || (y == _prop.worldSizeY) || (x < 0) || 
             (x == _prop.worldSizeX));
 
-            Console.WriteLine($"{x} {y}");
-
             Position pos = new Position(x, y);
 
             return pos;
@@ -353,6 +346,7 @@ namespace LP1_Epoca_Especial
         /// simulation</param>
         private World WorldUpdate(List<Agent> _agents, World world)
         {
+            // For each agent, the world is updates depending of the agent
             foreach(Agent a in _agents)
             {
                 switch(a.Type)
@@ -396,48 +390,22 @@ namespace LP1_Epoca_Especial
         private List<Agent> SwapEvent(List<Agent> _agents, World world, 
         Position originalPos, Position adjacentPos)
         {
-            int end = 2;
-            bool ori = true, adj = true;
-    
-            if(world[originalPos.X, originalPos.Y] == 0)
-            {
-                ori = false;
-                end--;
-            }
-
-            if(world[adjacentPos.X, adjacentPos.Y] == 0)
-            {
-                adj = false;
-                end--;
-            }
+            // Resets the position of both cases
             world[adjacentPos.X, adjacentPos.Y] = 0;
             world[originalPos.X, originalPos.Y] = 0;
 
-            for(int i = 0; (end > 0); i++)
+            // If there's a agent in one of the cases, then it moves
+            for(int i = 0; i < _agents.Count ; i++)
             {
-                if(ori == true)
+                if((_agents[i].Pos.X == originalPos.X) && 
+                (_agents[i].Pos.Y == originalPos.Y))
                 {
-                    if((_agents[i].Pos.X == originalPos.X) && 
-                    (_agents[i].Pos.Y == originalPos.Y))
-                    {
-                        Agent a = new Agent
-                            (adjacentPos, _agents[i].Type);
-                        _agents[i] = a;
-                        ori = false;
-                        end--;
-                    }
+                    _agents[i].Move(adjacentPos);
                 }
-                if(adj == true)
+                else if((_agents[i].Pos.X == adjacentPos.X) && 
+                    (_agents[i].Pos.Y == adjacentPos.Y))
                 {
-                    if((_agents[i].Pos.X == adjacentPos.X) && 
-                        (_agents[i].Pos.Y == adjacentPos.Y))
-                    {
-                        Agent a = new Agent
-                            (originalPos, _agents[i].Type);
-                        _agents[i] = a;
-                        adj = false;
-                        end--;
-                    }
+                    _agents[i].Move(originalPos);
                 }
             }
 
@@ -457,44 +425,25 @@ namespace LP1_Epoca_Especial
         private List<Agent> ReproductionEvent(List<Agent> _agents, World world, 
         Position originalPos, Position adjacentPos)
         {
-            int end = 0;
-            bool ori = false, adj = false;
-            
-            if((world[originalPos.X, originalPos.Y] == 0) && 
-            (world[adjacentPos.X, adjacentPos.Y] != 0))
+            // Adds the new agent to the world
+            for(int i = 0; i < _agents.Count ; i++)
             {
-                adj = true;
-                end = 1;
-            }
-
-            if((world[originalPos.X, originalPos.Y] != 0) && 
-            (world[adjacentPos.X, adjacentPos.Y] == 0))
-            {
-                ori = true;
-                end = 1;
-            }
-
-            for(int i = 0; (end > 0) ; i++)
-            {
-                if(ori == true)
+                if((_agents[i].Pos.X == originalPos.X) && 
+                (_agents[i].Pos.Y == originalPos.Y))
                 {
-                    if((_agents[i].Pos.X == originalPos.X) && 
-                    (_agents[i].Pos.Y == originalPos.Y))
+                    if(world[adjacentPos.X, adjacentPos.Y] == 0)
                     {
-                       
-                        Agent a = new Agent
-                            (adjacentPos, _agents[i].Type);
-                        end = 0;
+                        Agent a = new Agent(adjacentPos, _agents[i].Type);
+                        _agents.Add(a);
                     }
                 }
-                else if(adj == true)
+                else if((_agents[i].Pos.X == adjacentPos.X) && 
+                (_agents[i].Pos.Y == adjacentPos.Y))
                 {
-                    if((_agents[i].Pos.X == adjacentPos.X) && 
-                        (_agents[i].Pos.Y == adjacentPos.Y))
+                    if(world[originalPos.X, originalPos.Y] == 0)
                     {
-                        Agent a = new Agent
-                            (originalPos, _agents[i].Type);
-                        end = 0;
+                        Agent a = new Agent(originalPos, _agents[i].Type);
+                        _agents.Add(a);
                     }
                 }
             }
@@ -515,48 +464,68 @@ namespace LP1_Epoca_Especial
         private List<Agent> SelectionEvent(List<Agent> _agents, World world, 
         Position originalPos, Position adjacentPos)
         {
-            int end = 0, posInAgent1 = 0, posInAgent2 = 0;
-            
-            if((world[originalPos.X, originalPos.Y] != 0) && 
-            (world[adjacentPos.X, adjacentPos.Y] != 0))
-            {
-                end = 2;
-            }
+            // Variables
+            int posInAgent1 = -1, posInAgent2 = -1;
 
-            for(int i = 0; (end > 0); i++)
+            // Resets the position of both cases
+            world[adjacentPos.X, adjacentPos.Y] = 0;
+            world[originalPos.X, originalPos.Y] = 0;
+
+            // Will take the position of the agents in the random cases
+            for(int i = 0; i < _agents.Count ; i++)
             {
                 if((_agents[i].Pos.X == originalPos.X) && 
                 (_agents[i].Pos.Y == originalPos.Y))
                 {
                     posInAgent1 = i;
-                    end--;
                 }
                 else if((_agents[i].Pos.X == adjacentPos.X) && 
                     (_agents[i].Pos.Y == adjacentPos.Y))
                 {
                     posInAgent2 = i;
-                    end--;
                 }
             }
 
-            Agent a = new Agent(originalPos, _agents[posInAgent1].Type);
-            Agent b = new Agent(adjacentPos, _agents[posInAgent2].Type);
+            // Checks if the two positions are not empty
+            if((posInAgent1 > -1) && (posInAgent2 > -1))
+            {
+                // agent a and b are created to clash in a paper, rock, scissor game
+                Agent a = new Agent(originalPos, _agents[posInAgent1].Type);
+                Agent b = new Agent(adjacentPos, _agents[posInAgent2].Type);
 
-            if((a.Type == AgentType.PAPER) && (b.Type == AgentType.ROCK))
-            {
-                _agents.Remove(_agents[posInAgent2]);
-                world[adjacentPos.X, adjacentPos.Y] = 0;
-            }
-            else if((a.Type == AgentType.ROCK) && (b.Type == AgentType.SCISSOR))
-            {
-                _agents.Remove(_agents[posInAgent2]);
-                world[adjacentPos.X, adjacentPos.Y] = 0;
-            }
-            else if((a.Type == AgentType.SCISSOR) && 
-            (b.Type == AgentType.PAPER))
-            {
-                _agents.Remove(_agents[posInAgent2]);
-                world[adjacentPos.X, adjacentPos.Y] = 0;
+                // See if the agent a or b win against one or another
+                if((a.Type == AgentType.PAPER) && (b.Type == AgentType.ROCK))
+                {
+                    _agents.Remove(_agents[posInAgent2]);
+                    world[adjacentPos.X, adjacentPos.Y] = 0;
+                }
+                else if((a.Type == AgentType.ROCK) && (b.Type == AgentType.SCISSOR))
+                {
+                    _agents.Remove(_agents[posInAgent2]);
+                    world[adjacentPos.X, adjacentPos.Y] = 0;
+                }
+                else if((a.Type == AgentType.SCISSOR) && 
+                (b.Type == AgentType.PAPER))
+                {
+                    _agents.Remove(_agents[posInAgent2]);
+                    world[adjacentPos.X, adjacentPos.Y] = 0;
+                }
+                else if((b.Type == AgentType.PAPER) && (a.Type == AgentType.ROCK))
+                {
+                    _agents.Remove(_agents[posInAgent1]);
+                    world[originalPos.X, adjacentPos.Y] = 0;
+                }
+                else if((b.Type == AgentType.ROCK) && (a.Type == AgentType.SCISSOR))
+                {
+                    _agents.Remove(_agents[posInAgent1]);
+                    world[originalPos.X, adjacentPos.Y] = 0;
+                }
+                else if((b.Type == AgentType.SCISSOR) && 
+                (a.Type == AgentType.PAPER))
+                {
+                    _agents.Remove(_agents[posInAgent1]);
+                    world[originalPos.X, adjacentPos.Y] = 0;
+                }
             }
 
             return _agents;

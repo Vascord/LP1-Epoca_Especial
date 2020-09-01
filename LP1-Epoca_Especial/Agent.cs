@@ -38,10 +38,13 @@ namespace LP1_Epoca_Especial
             _type = type;
         }
 
-        // private void Move(Vector2 vector)
-        // {
-        //     _pos = vector;
-        // }
+        /// <summary>
+        /// Changes the pos of the agent.
+        /// </summary>
+        public void Move(Position vector)
+        {
+            _pos = vector;
+        }
         // public void Move(float x, float y)
         // {
         //     Vector2 newPos = new Vector2(x,y);
