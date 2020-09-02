@@ -4,16 +4,16 @@ namespace LP1_Epoca_Especial
 {
     public class UI
     {
-        /// <summary>
-        /// World of the simulation
-        /// </summary>
         private World _world;
 
-        /// <summary>
-        /// Properties of the simulation
-        /// </summary>
         private Properties _prop;
 
+        /// <summary>
+        /// Class constructor.
+        /// </summary>
+        /// <param name="world">MultiDimensional array, being the world
+        /// of the simulation</param>
+        /// <param name="prop">Properities of the simulation</param>
         public UI(World world, Properties prop)
         {
             this._world = world;
@@ -23,7 +23,7 @@ namespace LP1_Epoca_Especial
         /// <summary>
         /// Method responsible for showing the world of the simalation.
         /// </summary>
-        public void simUI()
+        public void VisualizacaoUI()
         {
             Console.Clear();
             for(int x = 0; x < _prop.worldSizeX; x++)

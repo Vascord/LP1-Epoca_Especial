@@ -5,19 +5,13 @@ namespace LP1_Epoca_Especial
     /// </summary>
     public class Agent
     {
-        /// <summary>
-        /// Position of the Agent.
-        /// </summary>
         private Position _pos;
 
-        /// <summary>
-        /// Type of the Agent.
-        /// </summary>
         private AgentType _type;
 
         /// <summary>
         /// Public Vector to get the position of the Agent.
-        /// </summary>
+        /// /// </summary>
         public Position Pos => _pos;
 
         /// <summary>
@@ -41,19 +35,11 @@ namespace LP1_Epoca_Especial
         /// <summary>
         /// Changes the pos of the agent.
         /// </summary>
+        /// <param name="vector">Position of the position you want the agent
+        /// to have</param>
         public void Move(Position vector)
         {
             _pos = vector;
         }
-        // public void Move(float x, float y)
-        // {
-        //     Vector2 newPos = new Vector2(x,y);
-        //     Move(newPos);
-        // }
-        // void OnMove()
-        // {
-        //     //if vector => move(vector)
-        //     //if floats => move(floats)
-        // }
     }
 }

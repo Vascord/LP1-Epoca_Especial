@@ -1,10 +1,10 @@
 namespace LP1_Epoca_Especial
 {
+    /// <summary>
+    /// Struct use create the events of the simulation and defining it's type
+    /// </summary>
     public struct Event
     {
-        /// <summary>
-        /// Type of event.
-        /// </summary>
         private EventType _type;
 
         /// <summary>

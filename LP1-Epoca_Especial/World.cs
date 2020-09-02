@@ -5,11 +5,7 @@ namespace LP1_Epoca_Especial
     /// </summary>
     public class World
     {
-
-        /// <summary>
-        /// MultiDimensional Array defined by _worldSizeX and _worldSize Y
-        /// </summary>
-        public int[,] _world ;
+        private int[,] _world ;
 
         /// <summary>
         /// Indexing world

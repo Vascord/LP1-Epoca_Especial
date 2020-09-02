@@ -67,12 +67,9 @@ namespace LP1_Epoca_Especial
 
         /// <summary>
         /// Static method that parses the properties in the file of the user
-        /// and returns a new <see cref="Properties"/> object which contains
-        /// those same properties after being treated.
         /// </summary>
         /// <param name="args">Arguments from the command line.</param>
-        /// <returns>An object of type <see cref="Properties"/> which contains 
-        /// the simulation properties.</returns>
+        /// <returns>The properties depending of the file properties</returns>
         public static Properties ReadFile(string[] args)
         {
             // Variables for properties
