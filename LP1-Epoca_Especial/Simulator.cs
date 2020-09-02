@@ -82,6 +82,7 @@ namespace LP1_Epoca_Especial
 
                 double lambdaSwap,lambdaRepr,lambdaSelc;
                 int numSwap,numRepr,numSelc;
+                List<Event> eventList;
 
                 // Obtaining lambda from each event
 
@@ -99,7 +100,7 @@ namespace LP1_Epoca_Especial
                 numSelc = Poisson(lambdaSelc);
 
                 // Creates the event list that will contain the events
-                List<Event> eventList = new List<Event>();
+                eventList = new List<Event>();
 
                 // Puts the number of events in the list
                 eventList = PuttingEvents(eventList, numSwap, 1);
@@ -148,8 +149,11 @@ namespace LP1_Epoca_Especial
                         }
                     }
 
+                    // The world is updated
                     _world = WorldUpdate(_agents, _world);
 
+                    // The ui creates a visualization of the world for the
+                    // user to see
                     _ui.VisualizacaoUI();
                 }
             }
@@ -171,8 +175,6 @@ namespace LP1_Epoca_Especial
 
             // Close the program ( all threading )
             Environment.Exit(0);
-
-            // David D. Ajudo-me :)
         }
 
         /// <summary>

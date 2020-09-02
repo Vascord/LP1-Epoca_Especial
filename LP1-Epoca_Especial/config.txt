@@ -1,6 +1,6 @@
 # Taxas
 selc-rate-exp 0.00
-swap-rate-exp 0.00
+swap-rate-exp 1.00
 repr-rate-exp 0.00
 
 # Dimensões
