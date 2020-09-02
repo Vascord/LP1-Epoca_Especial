@@ -57,6 +57,8 @@ _while_ é quebrado e fecha o programa.
 
 ## UML
 
+![Diagrama de classes](UML.png)
+
 ## Observações e resultados
 
 Consuate as observaçoes, mais o _swap-rate-exp_ é maior, mais a formação de 
