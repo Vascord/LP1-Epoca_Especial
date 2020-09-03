@@ -13,7 +13,7 @@ Vasco Duarte (21905658)
 ### Vasco Duarte
 
 Não tendo grupo, nem nenhuma ajuda/commit do meu antigo grupo, eu posso
-afirmar que fiz o projeto desde o começo até a sua concluzão.
+afirmar que fiz o projeto desde o começo até a sua conclusão.
 
 ## Arquitetura da Solução
 
@@ -28,27 +28,27 @@ método `SimulatorRunner()`.
 ### Durante a Simulação
 
 A classe `Simulator` vai criar uma instância de `World`, uma lista de `Agent` e
-uma instância de `UI`. A instância de `World` vai ser generada consuate as 
-propriedades de `Properties`, e depois vai ser placeado os agentes 
-aléatoriamente na instância de `World` e metidos na lista de `Agent`.
+uma instância de `UI`. A instância de `World` vai ser generada consoante as 
+propriedades de `Properties`, e depois vai meter os agentes aléatoriamente na 
+instância de `World` e metidos na lista de `Agent`.
 
-Depois, o programa vai criar uma Thread no `SimulatorRunner()`, aonde o 
+Depois, o programa vai criar uma _Thread_ no `SimulatorRunner()`, onde o 
 método `CoreLoop()` vai decorrer o simulador em sí e o `SimulatorRunner()` vai
-estar a espera que o utilizador pressione o butão _Escape_, acabando o programa.
+estar à espera que o utilizador pressione o butão _Escape_, acabando o programa.
 
-O `CoreLoop()` consiste de um _loop_ que é executado infinitamente se o utilizador
-não pressione o butão _Escape_.  
+O `CoreLoop()` consiste de um _loop_ que é executado infinitamente se o 
+utilizador não pressionar o butão _Escape_.  
   
-Para cada turno executado, o método em primeiro vai criar o valor lambda para
-cada evento para o _Poisson algorithm_. Depois de ter o numero de cada evento
-com esse algoritomo, criamos uma lista de `Event` e com o método 
-`PuttingEvents()` metemos os tipos de eventos adequados. Esse lista depois leva
-_shuffle_ com o método `ShuffleList()`, com o _Fisher-Yates algorithm_.
+Para cada turno executado, o método `CoreLoop()`, em primeiro lugar, 
+vai criar o valor lambda para cada evento para o _Poisson algorithm_. Depois de 
+ter o numero de cada evento, criamos uma lista de `Event` e com o método 
+`PuttingEvents()` metemos os tipos de eventos adequados. Esse lista depois leva 
+_shuffle_ com o método `ShuffleList()`, baseado no _Fisher-Yates algorithm_.
   
-Depois isso, a lista é percurida, pegando duas casas vizinhas e fazendo o 
+Em seguida, a lista é percurrida, pegando duas casas vizinhas e fazendo o 
 evento adequado. A instância de `World` é actualizada e o método 
-`VisualizacaoUI()` da instância de `UI` cria uma visualização para o utilizador.
-Depois disso, passamos então o próximo evento.
+`VisualizacaoUI()` da instância de `UI` cria uma visualização para o utilizador
+quando já todos os eventos estiverem feitos.
 
 ### Fim de simulação
 
@@ -61,22 +61,24 @@ _while_ é quebrado e fecha o programa.
 
 ## Observações e resultados
 
-Consuate as observaçoes, mais o _swap-rate-exp_ é maior, mais a formação de 
-grandes comunidades de um dos tipos a (eles estão mais juntos), então a 1, 
-consiguimos ver bem esse fenómeno. A -1, temos o efeito inverso, aonde só se
+Consoante as observações, mais o _swap-rate-exp_ é pequeno, mais a formação de 
+grandes comunidades de um dos tipos há (eles estão mais juntos), então a -1, 
+conseguimos ver bem esse fenómeno. Se è 1, temos o efeito inverso, onde só se
 cria pequenas comunidades.
 
-Um conjunto que possa eliminar uma espécie é deixando o _swap-rate-exp_ a zero,
-metemos o _repr-rate-exp_ a -1, e a _selc-rate-ext_ a 1. Isto faz que seja
-as espécies lutam sempre, e fazendo que uma espécie com poucas unidades possa
-se inste, tendo pouca reprodutividade.
+Um conjunto que possa eliminar uma espécie vai deixar o _swap-rate-exp_ a 0,
+metemos o _repr-rate-exp_ a -1, e o _selc-rate-ext_ a 1. Isto faz que as 
+espécies lutem sempre, e fazendo que uma das espécie com poucas unidades possa
+se extinguir, tendo pouca reprodutividade.
+
 As duas outras ficam a lutar, fazendo que a mais forte (aquela que ganha pelas
-as regras do pedra, papel o tesoura) fica o único vivo.
+as regras do pedra, papel o tesoura) seja a única viva.
 
 ## Referencias
 
 - [Simulação de Pandemia](https://github.com/NelsonSalvador/Recurso_Lp1)
 
-Pessoas que me ajudarão : 
+Pessoas que me ajudaram : 
 - Miguel Romão Fernández para Threading e boas práticas em geral.
-- David D. para Threading e Task (que mudificai o final).
+- David D. para Threading e Task (que modifiquei no final).
+- Grupo 03 por me ter guiado na compreensão do enunciado.

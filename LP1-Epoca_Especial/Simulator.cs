@@ -68,6 +68,10 @@ namespace LP1_Epoca_Especial
             // Place Agents of each type in world
 
             _world = WorldUpdate(_agents, _world);
+
+            // The ui creates a visualization of the world for the
+            // user to see
+            _ui.VisualizacaoUI();
         }
 
         /// <summary>
@@ -113,9 +117,6 @@ namespace LP1_Epoca_Especial
                 // Will do this turn with the events in the event list
                 for(int i = 0; i < eventList.Count; i++)
                 {
-                    // Clear the console
-                    Console.Clear();
-
                     // Get the pos of a random location in the world and get a
                     // pos next to it according to the Von Neumann
                     // neighbourhood
@@ -148,14 +149,16 @@ namespace LP1_Epoca_Especial
                             break;
                         }
                     }
-
-                    // The world is updated
-                    _world = WorldUpdate(_agents, _world);
-
-                    // The ui creates a visualization of the world for the
-                    // user to see
-                    _ui.VisualizacaoUI();
                 }
+                // Clear the console
+                Console.Clear();
+
+                // The world is updated
+                _world = WorldUpdate(_agents, _world);
+
+                // The ui creates a visualization of the world for the
+                // user to see
+                _ui.VisualizacaoUI();
             }
         }
 
@@ -350,8 +353,26 @@ namespace LP1_Epoca_Especial
                         break;
                     }
                 }
-            }while((y < 0) || (y == _prop.worldSizeY) || (x < 0) || 
-            (x == _prop.worldSizeX));
+            }while((y < -1) || (y > _prop.worldSizeY) || (x < -1) || 
+            (x > _prop.worldSizeX));
+
+            // Turn around the boarder if meet the right conditions
+            if(x == -1)
+            {
+                x = _prop.worldSizeX-1;
+            }
+            else if(y == -1)
+            {
+                y = _prop.worldSizeY-1;
+            }
+            else if(x == _prop.worldSizeX)
+            {
+                x = 0;
+            }
+            else if(y == _prop.worldSizeY)
+            {
+                y = 0;
+            }
 
             pos = new Position(x, y);
 
@@ -415,10 +436,6 @@ namespace LP1_Epoca_Especial
             // Variables
             int i;
 
-            // Resets the position of both cases
-            world[adjacentPos.X, adjacentPos.Y] = 0;
-            world[originalPos.X, originalPos.Y] = 0;
-
             // If there's a agent in one of the cases, then it moves
             for(i = 0; i < _agents.Count ; i++)
             {
@@ -464,6 +481,7 @@ namespace LP1_Epoca_Especial
                     {
                         Agent a = new Agent(adjacentPos, _agents[i].Type);
                         _agents.Add(a);
+                        break;
                     }
                 }
                 else if((_agents[i].Pos.X == adjacentPos.X) && 
@@ -471,8 +489,9 @@ namespace LP1_Epoca_Especial
                 {
                     if(world[originalPos.X, originalPos.Y] == 0)
                     {
-                        Agent a = new Agent(originalPos, _agents[i].Type);
-                        _agents.Add(a);
+                        Agent b = new Agent(originalPos, _agents[i].Type);
+                        _agents.Add(b);
+                        break;
                     }
                 }
             }
