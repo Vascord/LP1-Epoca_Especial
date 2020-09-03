@@ -2,6 +2,9 @@ using System;
 
 namespace LP1_Epoca_Especial
 {
+    /// <summary>
+    /// Class use create an UI for the user
+    /// </summary>
     public class UI
     {
         private World _world;
